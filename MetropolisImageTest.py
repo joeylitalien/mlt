@@ -1,8 +1,10 @@
+#python MetropolisImageTest.py
 import numpy as np
 import cv2
 import random
 
 mutations = 64*660*660
+checkpoints = 10000
 img = cv2.imread('lion.jpg',0)
 
 
@@ -32,7 +34,12 @@ def makeHistogram(img):
             x1=y1
             Fx=Fy
         histogram[x1,x0] = histogram[x1,x0] + 1.0/(spp*3) # accumulate histogram. Final histogram is a scaled version of original image, so we heuristically determine 3 as the scaling factor
+        if (i%checkpoints) == 0:
+            cv2.imwrite("MetropolisTest_%02d.png" %(i) ,((histogram*255*100).astype('uint8')))
+            #cv2.destroyAllWindows()
+            #cv2.imshow('image',histogram)
     cv2.imshow('image',histogram)
+    cv2.imwrite("MetropolisTest_Final.png" ,histogram)
 
 
 makeHistogram(img)
